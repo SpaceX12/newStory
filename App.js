@@ -10,18 +10,21 @@ export default class App extends React.Component{
   render(){
     return (
       <View style={styles.container}>
-       <AppContainer/>
+
+        <AppContainer/>
+
       </View>
     );
   }
 }
 
 const TabNavigator = createBottomTabNavigator({
-  ReadStories: ReadStSc,
-  WriteYourOwn: WriteStSc
+  WriteYourOwn: WriteStSc,
+  ReadStories: ReadStSc
 },
 {
   defaultNavigationOptions:({navigation})=>({
+
     tabBarIcon:()=>{
       const routeName = navigation.state.routeName;
 
@@ -31,7 +34,8 @@ const TabNavigator = createBottomTabNavigator({
             source={require("./Images/PRO+C70+Images/write.png")}
             style={{
               width:40, 
-              height:40}}
+              height:40
+            }}
             />
         )
       }else if(routeName === "ReadStories"){

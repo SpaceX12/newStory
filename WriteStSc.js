@@ -1,10 +1,43 @@
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Header } from 'react-native-elements';
 import { TextInput } from 'react-native-gesture-handler';
+import db from '../config';
+import * as firebase from 'firebase';
 
 class WriteStSc extends React.Component{
+
+    constructor(){
+        super()
+
+        this.state={
+            author:'',
+            story:'',
+            storyName:''
+        }
+    }
+
+    submitStory = async() => {
+        db.collection("Stories").add({
+            author: this.state.author,
+            story: this.state.story,
+            title: this.state.storyName,
+
+            date:firebase.firestore.Timestamp.now().toDate(),
+
+            submitted:true,
+        });
+
+        this.setState({
+            author:'',
+            story:'',
+            storyName:''
+        });
+        
+    }
+
     render(){
+
         return(
             <View>
                 <Header
@@ -21,11 +54,23 @@ class WriteStSc extends React.Component{
                 <TextInput
                     style={styling.textInput}
                     placeholder={'Title'} 
+
+                    onChangeText={text=>{
+                        this.setState({
+                            storyName: text
+                        })
+                    }}
                 />
 
                 <TextInput
                     style={styling.textInput}
                     placeholder={'Your Name'} 
+
+                    onChangeText={text=>{
+                        this.setState({
+                            author: text
+                        })
+                    }}
                 />
 
                 <TextInput
@@ -33,7 +78,21 @@ class WriteStSc extends React.Component{
                     placeholder={'The Story'} 
                     multiline = "true"
                     
+                    onChangeText={text=>{
+                        this.setState({
+                            story: text
+                        })
+                    }}
                 />
+
+                <TouchableOpacity 
+                    style={styling.sub}
+
+                    onPress={async()=>{
+                        this.submitStory();
+                      }}
+                    ><Text style={styling.subText}>Submit</Text>
+                </TouchableOpacity>
 
             </View>
         );
@@ -48,7 +107,23 @@ const styling = StyleSheet.create({
     },
     textInput:{
         borderWidth:2,
-        marginTop:10
+        marginTop:10,
+        wordWrap:'wrap'
+    },
+    sub:{
+        backgroundColor:"blue",
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth:2,
+        borderRadius:5,
+        marginTop:30
+    },
+    subText:{
+        color:'white',
+        fontsize:10,
+        fontWeight:"bold",
+        psadding:10,
+        textAlign:'center',
     }
 })
 
