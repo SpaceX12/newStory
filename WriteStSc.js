@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, KeyboardAvoidingView, Alert } from 'react-native';
 import { Header } from 'react-native-elements';
 import { TextInput } from 'react-native-gesture-handler';
 import db from '../config';
@@ -11,13 +11,14 @@ class WriteStSc extends React.Component{
         super()
 
         this.state={
-            author:'',
-            story:'',
-            storyName:''
-        }
+            author:"",
+            story:"",
+            storyName:""
+        };
     }
 
     submitStory = async() => {
+        
         db.collection("Stories").add({
             author: this.state.author,
             story: this.state.story,
@@ -29,11 +30,12 @@ class WriteStSc extends React.Component{
         });
 
         this.setState({
-            author:'',
-            story:'',
-            storyName:''
+            author: "",
+            story: "",
+            storyName: ""
         });
         
+        Alert.alert("Your Story Has Been Uploaded");
     }
 
     render(){
@@ -76,7 +78,7 @@ class WriteStSc extends React.Component{
                 <TextInput
                     style={styling.textInput}
                     placeholder={'The Story'} 
-                    multiline = "true"
+                    multiline = 'true'
                     
                     onChangeText={text=>{
                         this.setState({
@@ -91,8 +93,10 @@ class WriteStSc extends React.Component{
                     onPress={async()=>{
                         this.submitStory();
                       }}
-                    ><Text style={styling.subText}>Submit</Text>
+                    ><Text style={styling.subText}>Upload</Text>
                 </TouchableOpacity>
+
+                <KeyboardAvoidingView/>
 
             </View>
         );
